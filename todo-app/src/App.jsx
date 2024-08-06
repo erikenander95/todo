@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import TodoForm from "./components/TodoForm";
 
@@ -20,6 +20,10 @@ function App() {
     setTodos([...todos, todo]);
   };
 
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
   return (
     <div className="App">
       <h1>Todo List</h1>
@@ -28,13 +32,14 @@ function App() {
         {todos.map((todo) => (
           <li key={todo.id}>
             <span
-              style={{
-                textDecoration: todo.completed ? "line-through" : "none",
-              }}
+              className={todo.completed ? "completed" : ""}
               onClick={() => toggleComplete(todo.id)}
             >
               {todo.text}
             </span>
+            <button className="delete" onClick={() => deleteTodo(todo.id)}>
+              Delete
+            </button>
           </li>
         ))}
       </ul>
