@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import TodoForm from "./components/TodoForm";
+import "./global.css"; // or another appropriate path
 
 function App() {
   const [todos, setTodos] = useState([
@@ -25,24 +26,26 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Todo List</h1>
-      <TodoForm addTodo={addTodo} />
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>
-            <span
-              className={todo.completed ? "completed" : ""}
-              onClick={() => toggleComplete(todo.id)}
-            >
-              {todo.text}
-            </span>
-            <button className="delete" onClick={() => deleteTodo(todo.id)}>
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div className="app-container">
+      <div className="App">
+        <h1>Todo List</h1>
+        <TodoForm addTodo={addTodo} />
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id}>
+              <span
+                className={todo.completed ? "completed" : ""}
+                onClick={() => toggleComplete(todo.id)}
+              >
+                {todo.text}
+              </span>
+              <button className="delete" onClick={() => deleteTodo(todo.id)}>
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
