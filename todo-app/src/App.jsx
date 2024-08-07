@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./App.css";
 import TodoForm from "./components/TodoForm";
-import "./global.css"; // or another appropriate path
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons"; // Import icons
 
 function App() {
   const [todos, setTodos] = useState([
@@ -40,7 +41,7 @@ function App() {
                 {todo.text}
               </span>
               <button className="delete" onClick={() => deleteTodo(todo.id)}>
-                Delete
+                <FontAwesomeIcon icon={faTimes} />
               </button>
             </li>
           ))}
