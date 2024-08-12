@@ -1,15 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import TodoForm from "./components/TodoForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons"; // Import icons
+import { faTimes } from "@fortawesome/free-solid-svg-icons"; // Import only the icons you need
 
 function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, text: "Learn React", completed: false },
-    { id: 2, text: "Build a Todo App", completed: false },
-  ]);
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Fetch todos from the backend when the component mounts
+  useEffect(() => {
+    fetch("http://localhost:5000/api/todos")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setTodos(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
+
+  // Handle adding a new todo
+  const addTodo = (todo) => {
+    setTodos([...todos, todo]);
+  };
+
+  // Handle toggling completion status
   const toggleComplete = (id) => {
     setTodos(
       todos.map((todo) =>
@@ -18,13 +42,18 @@ function App() {
     );
   };
 
-  const addTodo = (todo) => {
-    setTodos([...todos, todo]);
-  };
-
+  // Handle deleting a todo
   const deleteTodo = (id) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="app-container">
